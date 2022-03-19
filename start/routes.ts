@@ -25,16 +25,21 @@ Route.group(() => {
     return { hello: 'world' }
   })
 
-  Route.post('users', 'AuthController.register')
-  Route.post('users/login', 'AuthController.login')
-  Route.get('user', 'AuthController.me').middleware(['auth:jwt'])
-  Route.put('users', 'AuthController.update').middleware(['auth:jwt'])
+  Route.post('/users', 'AuthController.register')
+  Route.post('/users/login', 'AuthController.login')
+  Route.get('/user', 'AuthController.me').middleware(['auth:jwt'])
+  Route.put('/users', 'AuthController.update').middleware(['auth:jwt'])
 
 
 
 
-  Route.resource('posts', 'PostsController').apiOnly()
-  Route.resource('categories', 'CategoriesController').apiOnly().middleware({
+  Route.resource('/posts', 'PostsController').apiOnly().middleware({
+    '*': ['auth:jwt'],
+    store: ['auth:jwt'],
+    destroy: ['auth:jwt']
+  })
+
+  Route.resource('/categories', 'CategoriesController').apiOnly().middleware({
     '*': ['auth:jwt'],
     update: ['auth:jwt'],
     destroy: ['auth:jwt']

@@ -12,12 +12,13 @@ export default class AuthController {
 
     public async register({ request, response } : HttpContextContract): Promise<void> {
 
-        const payload = await request.validate(StoreUserValidator)
+        const payload  = await request.validate(StoreUserValidator)
       
-        const user = await User.create(payload)
+        const user : User = await User.create(payload)
     
       
         return response.created(user) // 201 CREATED
+       
       }
     public async login({ auth, request, response }: HttpContextContract): Promise<void> {
 

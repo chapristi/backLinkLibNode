@@ -18,6 +18,8 @@ export default class Post extends BaseModel {
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
+  @column()
+  public userId : number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
