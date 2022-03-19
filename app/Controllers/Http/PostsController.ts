@@ -41,26 +41,31 @@ export default class PostsController {
 
     }
 
-    public async update({ request,params,response } : HttpContextContract): Promise<void> {
+    public async update({ request,params,response,bouncer } : HttpContextContract): Promise<void> {
 
-
+        const payload = await request.validate(UpdatePostValidator)
+        const post:Post = await Post.findOrFail(params.id)
+        await bouncer
+            .with('PostPolicy')
+            .authorize('update', post)
         try{
-
+        
             
-            const payload = await request.validate(UpdatePostValidator)
-
-            const post : Post[] = await Post
-                .query()
-                .where('id', params.id )
-                .update(payload)
+            post
+                .merge(payload)
+                .save()
             return response.ok(post) 
     }catch (err : any){return response.status(500).json({err : err.message,message: "The server returned an error!Impossible to update this post"})}
 
 
     }
 
-    public async destroy({ params,response } : HttpContextContract): Promise<void> {
+    public async destroy({ params,response,bouncer } : HttpContextContract): Promise<void> {
         const post:Post = await Post.findOrFail(params.id)
+        await bouncer
+            .with('PostPolicy')
+            .authorize('delete', post)
+    
         try{
             await post.delete()  
             response.status(200).json({message: "the post has been deleted"})
