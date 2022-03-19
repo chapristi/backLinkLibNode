@@ -4,30 +4,30 @@ export default class CategoriesController {
 
 
 
-    public async index({ request, response } : HttpContextContract): Promise<void> {
+    public async index({ } : HttpContextContract): Promise<void> {
 
 
 
     }
-    public async store({ request, response } : HttpContextContract): Promise<void> {
-
-
-
-    }
-
-    public async show({ request, response } : HttpContextContract): Promise<void> {
+    public async store({ } : HttpContextContract): Promise<void> {
 
 
 
     }
 
-    public async update({ request, response } : HttpContextContract): Promise<void> {
+    public async show({ } : HttpContextContract): Promise<void> {
 
 
 
     }
 
-    public async destroy({ request, response } : HttpContextContract): Promise<void> {
+    public async update({ } : HttpContextContract): Promise<void> {
+
+
+
+    }
+
+    public async destroy({  } : HttpContextContract): Promise<void> {
 
 
 
