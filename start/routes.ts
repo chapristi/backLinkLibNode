@@ -20,38 +20,40 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
-
-Route.post('users', 'AuthController.register')
-Route.post('users/login', 'AuthController.login')
-Route.get('user', 'AuthController.me').middleware(['auth:jwt'])
-Route.put('users', 'AuthController.update').middleware(['auth:jwt'])
-
-
-
-
-Route.resource('posts', 'PostsController').apiOnly()
-Route.resource('categories', 'CategoriesController').apiOnly().middleware({
-  '*': ['auth:jwt'],
-  update: ['auth:jwt'],
-  destroy: ['auth:jwt']
-})
-
-
-Route.post('/refresh', async ({ auth, request,response }:HttpContextContract) => {
-  const refreshToken = request.input("refresh_token");
-  const jwt = await auth.use("jwt").loginViaRefreshToken(refreshToken);
-  return response.ok({
-    "token": jwt,
+Route.group(() => {
+  Route.get('/', async () => {
+    return { hello: 'world' }
   })
-  
-});
-Route.post('/logout', async ({ auth, response }:HttpContextContract) => {
-  await auth.use('jwt').revoke()
-  response.ok( {
-    revoked: true
+
+  Route.post('users', 'AuthController.register')
+  Route.post('users/login', 'AuthController.login')
+  Route.get('user', 'AuthController.me').middleware(['auth:jwt'])
+  Route.put('users', 'AuthController.update').middleware(['auth:jwt'])
+
+
+
+
+  Route.resource('posts', 'PostsController').apiOnly()
+  Route.resource('categories', 'CategoriesController').apiOnly().middleware({
+    '*': ['auth:jwt'],
+    update: ['auth:jwt'],
+    destroy: ['auth:jwt']
   })
-})
+
+
+  Route.post('/refresh', async ({ auth, request,response }:HttpContextContract) => {
+    const refreshToken = request.input("refresh_token");
+    const jwt = await auth.use("jwt").loginViaRefreshToken(refreshToken);
+    return response.ok({
+      "token": jwt,
+    })
+    
+  });
+  Route.post('/logout', async ({ auth, response }:HttpContextContract) => {
+    await auth.use('jwt').revoke()
+    response.ok( {
+      revoked: true
+    })
+  })
+}).prefix('api')
+
