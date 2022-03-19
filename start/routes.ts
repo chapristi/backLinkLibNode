@@ -33,15 +33,13 @@ Route.put('users', 'AuthController.update').middleware(['auth:jwt'])
 
 
 
-Route.resource('tasks', 'TaskController').apiOnly()
+Route.resource('posts', 'PostsController').apiOnly()
+Route.resource('categories', 'CategoriesController').apiOnly().middleware({
+  '*': ['auth:jwt'],
+  update: ['auth:jwt'],
+  destroy: ['auth:jwt']
+})
 
-// Cette ligne de code va créer 5 chemin urls pour le CRUD
-
-// Liste des tâches: GET /tasks (tasks.index)
-// Sauvegarder une tâches: POST /tasks (tasks.store)
-// Lire une tâche: GET tasks/:id (tasks.show)
-// Mise à jour d'une tâche: PUT tasks/:id (tasks.update)
-// Effacer une tâche: DELETE tasks/:id (tasks.destroy)
 
 Route.post('/refresh', async ({ auth, request,response }:HttpContextContract) => {
   const refreshToken = request.input("refresh_token");
