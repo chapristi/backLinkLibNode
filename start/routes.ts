@@ -45,9 +45,7 @@ Route.group(() => {
     destroy: ['auth:jwt']
   })
   Route.resource('/categoriesPost', 'CategoriesPostsController').apiOnly().middleware({
-    '*': ['auth:jwt'],
-    update: ['auth:jwt'],
-    destroy: ['auth:jwt']
+ 
   })
 
 
