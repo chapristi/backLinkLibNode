@@ -44,6 +44,11 @@ Route.group(() => {
     update: ['auth:jwt'],
     destroy: ['auth:jwt']
   })
+  Route.resource('/categoriesPost', 'CategoriesPostsController').apiOnly().middleware({
+    '*': ['auth:jwt'],
+    update: ['auth:jwt'],
+    destroy: ['auth:jwt']
+  })
 
 
   Route.post('/refresh', async ({ auth, request,response }:HttpContextContract) => {

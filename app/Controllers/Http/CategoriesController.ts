@@ -9,10 +9,8 @@ export default class CategoriesController {
 
     public async index({ response} : HttpContextContract): Promise<void> {
         try{
-           
-                const category : Category[] = await Category.all();
-                return response.ok(category);
-            
+            const category : Category[] = await Category.all();    
+            return response.ok(category);
         }catch(err : any){return response.status(500).json({error : err.message,messages : "Unable to retrieve data at this time"}); }
 
     }
@@ -28,12 +26,7 @@ export default class CategoriesController {
 
             catch (err : any){return response.status(500).json({error: err.message,message: "the server returned an error! Impossible to create a category! try again!"})
         }
-      
-
-
-        
-        
-
+     
     }
 
     public async show({ response,params} : HttpContextContract): Promise<void> {
@@ -48,9 +41,7 @@ export default class CategoriesController {
     }
 
     public async update({bouncer,params,response,request} : HttpContextContract): Promise<void> {
-        
- 
-        try{
+      try{
             await bouncer
                 .with('CatgoriesPolicy')
                 .authorize('update')
