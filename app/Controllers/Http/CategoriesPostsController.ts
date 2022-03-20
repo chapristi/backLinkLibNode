@@ -6,7 +6,11 @@ export default class CategoriesPostsController {
         const data = request.only(['gamesTeams'])
         console.table(data.gamesTeams) 
         try{
-            const categoriesPost : CategoriesPost[] = await CategoriesPost.all();    
+            const categoriesPost =    await CategoriesPost
+                    .query()
+                    .with('category', q=> {
+                        q.whereRaw("id = ? OR id = ?", data.gamesTeams)
+                })
             return response.ok(categoriesPost);
         }catch(err : any){return response.status(500).json({error : err.message,messages : "Unable to retrieve data at this time"}); }
    
