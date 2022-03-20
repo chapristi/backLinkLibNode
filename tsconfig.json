@@ -31,7 +31,8 @@
       "@adonisjs/lucid",
       "@adonisjs/auth",
       "adonis5-jwt",
-      "@adonisjs/bouncer"
+      "@adonisjs/bouncer",
+      "adonis5-swagger"
     ]
   }
 }

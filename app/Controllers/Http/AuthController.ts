@@ -9,14 +9,12 @@ import UpdateUserValidator from "App/Validators/Auth/UpdateUserValidator"
 export default class AuthController {
 
 
-
     public async register({ request, response } : HttpContextContract): Promise<void> {
 
         const payload  = await request.validate(StoreUserValidator)
       
         const user : User = await User.create(payload)
     
-      
         return response.created(user) // 201 CREATED
        
       }
@@ -27,10 +25,7 @@ export default class AuthController {
         const token =  await auth.use("jwt")
      
           .attempt(email, password)
-          
-       
-  
-    
+      
         return response.ok({
           "token": token,
         
@@ -50,7 +45,7 @@ export default class AuthController {
 
         const payload = await request.validate(UpdateUserValidator)
 
-        const user = await auth.user!.merge(payload).save()
+        const user = await auth.use("jwt").user!.merge(payload).save()
 
         return response.ok(user) // 200 OK
     }

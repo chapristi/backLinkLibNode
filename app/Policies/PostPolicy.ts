@@ -6,7 +6,7 @@ import Bouncer from '@ioc:Adonis/Addons/Bouncer';
 export default class PostPolicy extends BasePolicy {
 	
 	public async update(user: User, post: Post) {
-		if (post.userId === user.id){
+		if (post.userId === user.id || user.roles ===  "ROLE_ADMIN"){
 			return true;
 		}
 		return Bouncer.deny('Unauthorized', 401)
@@ -14,6 +14,10 @@ export default class PostPolicy extends BasePolicy {
 	}
 	public async delete(user: User, post: Post) {
 
+		if (post.userId === user.id || user.roles ===  "ROLE_ADMIN"){
+			return true;
+		}
+		return Bouncer.deny('Unauthorized', 401)
 
 	}
 }

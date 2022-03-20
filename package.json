@@ -29,6 +29,7 @@
     "@adonisjs/lucid": "^17.1.0",
     "@adonisjs/repl": "^3.1.9",
     "adonis5-jwt": "^1.1.4",
+    "adonis5-swagger": "^1.4.0",
     "luxon": "^2.3.1",
     "mysql": "^2.18.1",
     "phc-argon2": "^1.1.3",

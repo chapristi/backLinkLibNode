@@ -15,6 +15,8 @@ export default class User extends BaseModel {
 
   @column()
   public username: string
+  @column()
+  public roles: string = "ROLE_USER"
 
   @column()
   public rememberMeToken?: string

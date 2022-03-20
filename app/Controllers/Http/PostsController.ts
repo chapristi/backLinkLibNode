@@ -11,12 +11,9 @@ export default class PostsController {
             return response.ok({post: post});
         }
         catch(err: any){return response.status(500).json({error : err.message,messages : "Unable to retrieve data at this time"});}
-        
-        
-
+   
     }
     public async store({request, response,auth} : HttpContextContract): Promise<void> {
-     
         try{
             const image = "https://legacy.adonisjs.com/"
             const {name ,link } = await request.validate(StorePostValidator)
@@ -24,11 +21,8 @@ export default class PostsController {
             response.created(post);
         }catch(err : any){
             response.status(500).json({error: err.message,message: "the server returned an error! Impossible to right a post! try again!"})
-
         }
         
-        
-
     }
 
     public async show({  params,response} : HttpContextContract): Promise<void> {
@@ -36,37 +30,30 @@ export default class PostsController {
         const post  = await Post.findOrFail(params.id);
         return response.ok({post: post});  
       
-    
-
-
     }
 
     public async update({ request,params,response,bouncer } : HttpContextContract): Promise<void> {
-
-        const payload = await request.validate(UpdatePostValidator)
-        const post:Post = await Post.findOrFail(params.id)
-        await bouncer
-            .with('PostPolicy')
-            .authorize('update', post)
         try{
-        
-            
+            const payload = await request.validate(UpdatePostValidator)
+            const post:Post = await Post.findOrFail(params.id)
+            await bouncer
+                .with('PostPolicy')
+                .authorize('update', post)
             post
                 .merge(payload)
                 .save()
-            return response.ok(post) 
-    }catch (err : any){return response.status(500).json({err : err.message,message: "The server returned an error!Impossible to update this post"})}
+            return response.ok({post : post,message : "the post has been updated."}) 
+        }catch (err : any){return response.status(500).json({err : err.message,message: "The server returned an error!Impossible to update this post"})}
 
 
     }
 
-    public async destroy({ params,response,bouncer } : HttpContextContract): Promise<void> {
-        const post:Post = await Post.findOrFail(params.id)
-        await bouncer
-            .with('PostPolicy')
-            .authorize('delete', post)
-    
+    public async destroy({ params,response,bouncer } : HttpContextContract): Promise<void> { 
         try{
+            const post:Post = await Post.findOrFail(params.id)
+            await bouncer
+                .with('PostPolicy')
+                .authorize('delete', post)
             await post.delete()  
             response.status(200).json({message: "the post has been deleted"})
         }catch(err : any) {
