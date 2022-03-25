@@ -1,8 +1,9 @@
+import Application from '@ioc:Adonis/Core/Application'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Post from 'App/Models/Post'
 import StorePostValidator from 'App/Validators/StorePostValidator';
 import UpdatePostValidator from 'App/Validators/UpdatePostValidator';
-
+import { v4 as uuidv4 } from 'uuid';
 export default class PostsController {
     public async index({ response } : HttpContextContract): Promise<void> {
 
@@ -15,8 +16,15 @@ export default class PostsController {
     }
     public async store({request, response,auth} : HttpContextContract): Promise<void> {
         try{
-            const image = "https://legacy.adonisjs.com/"
-            const {name ,link } = await request.validate(StorePostValidator)
+          
+            const {name ,link,cover_image } = await request.validate(StorePostValidator)
+         
+            const image = `${uuidv4()}.${cover_image.extname}`;
+            await cover_image.move(Application.tmpPath('uploads'), {
+                name: image,
+                overwrite: true, 
+            })
+              
             const post  : Promise<Post>  = Post.create({name : name,link : link,image : image,userId : await (await auth.use("jwt").authenticate()).id})
             response.created(post);
         }catch(err : any){

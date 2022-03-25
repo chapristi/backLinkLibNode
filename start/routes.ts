@@ -47,6 +47,9 @@ Route.group(() => {
   Route.resource('/categoriesPost', 'CategoriesPostsController').apiOnly().middleware({
  
   })
+  Route.resource('/favorites', 'CategoriesPostsController').apiOnly().middleware({
+ 
+  })
 
 
   Route.post('/refresh', async ({ auth, request,response }:HttpContextContract) => {

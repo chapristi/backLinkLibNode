@@ -27,7 +27,11 @@ export default class StorePostValidator {
         name : schema.string({trim: true},[]),
        
         link : schema.string({trim: true},[]),
-
+        cover_image: schema.file({
+          size: '10mb',
+          extnames: ['jpg', 'gif', 'png'],
+        }),
+    
 
   })
 
