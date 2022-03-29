@@ -1,0 +1,9 @@
+/* eslint-disable */
+{
+  "extends": ["plugin:adonis/typescriptApp", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  }
+}
+/* eslint-disable */
