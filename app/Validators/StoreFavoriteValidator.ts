@@ -1,7 +1,7 @@
 import { schema } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class StorePostValidator {
+export default class StoreFavoriteValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,13 +24,7 @@ export default class StorePostValidator {
    *    ```
    */
   public schema = schema.create({
-    name: schema.string({ trim: true }, []),
-
-    link: schema.string({ trim: true }, []),
-    coverImage: schema.file({
-      size: '10mb',
-      extnames: ['jpg', 'gif', 'png'],
-    }),
+    postId: schema.number(),
   })
 
   /**

@@ -12,6 +12,11 @@ export default class CategoriesPostsController {
         index++
         continue
       }
+      if (nbr - 1 === index) {
+        text += 'categories_posts.category_id = ?'
+        index++
+        continue
+      }
 
       text += 'categories_posts.category_id = ? OR '
       index++
@@ -23,22 +28,22 @@ export default class CategoriesPostsController {
     let parse = JSON.parse(data.gamesTeams)
     console.log(parse['gamesTeams'])
     console.log(this.helperRequest(parse['gamesTeams'].length))
-    const books = await Database.from('categories_posts')
-      .join('categories', 'categories_posts.category_id', 'categories.id')
-      .join('posts', 'categories_posts.post_id', 'posts.id')
-      .select('posts.name as post_name')
-      .select('posts.link as post_link')
-      .select('posts.image as post_image')
-      .select('categories.name as category_name')
-      .whereRaw(this.helperRequest(parse['gamesTeams'].length), parse['gamesTeams'])
 
-    console.log(books)
     try {
-      const categoriesPost = await CategoriesPosts.query().preload('categories').preload('posts')
+      const books = await Database.from('categories_posts')
+        .distinct()
+        .join('posts', 'categories_posts.post_id', 'posts.id')
+        .select('posts.id as post_id')
+        .join('categories', 'categories_posts.category_id', 'categories.id')
 
-      console.log(categoriesPost)
-      console.log('f')
-      return response.ok(categoriesPost)
+        .select('posts.name as post_name')
+
+        .select('posts.link as post_link')
+        .select('posts.image as post_image')
+        .whereRaw(this.helperRequest(parse['gamesTeams'].length), parse['gamesTeams'])
+
+      console.log(books)
+      return response.ok(books)
     } catch (err: any) {
       return response
         .status(500)

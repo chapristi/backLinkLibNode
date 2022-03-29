@@ -17,10 +17,10 @@ export default class PostsController {
   }
   public async store({ request, response, auth }: HttpContextContract): Promise<void> {
     try {
-      const { name, link, cover_image } = await request.validate(StorePostValidator)
+      const { name, link, coverImage } = await request.validate(StorePostValidator)
 
-      const image = `${uuidv4()}.${cover_image.extname}`
-      await cover_image.move(Application.tmpPath('uploads'), {
+      const image = `${uuidv4()}.${coverImage.extname}`
+      await coverImage.move(Application.tmpPath('uploads'), {
         name: image,
         overwrite: true,
       })
@@ -29,7 +29,7 @@ export default class PostsController {
         name: name,
         link: link,
         image: image,
-        userId: await (await auth.use('jwt').authenticate()).id,
+        userId: (await auth.use('jwt').authenticate()).id,
       })
       response.created(post)
     } catch (err: any) {
