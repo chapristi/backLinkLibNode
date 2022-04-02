@@ -1,6 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CategoriesPosts from 'App/Models/CategoriesPost'
 import Database from '@ioc:Adonis/Lucid/Database'
+import StoreCategoriesPostValidator from 'App/Validators/StoreCategoriesPostValidator'
+
 
 export default class CategoriesPostsController {
   private helperRequest(nbr: number): string {
@@ -35,6 +37,7 @@ export default class CategoriesPostsController {
         .join('posts', 'categories_posts.post_id', 'posts.id')
         .select('posts.id as post_id')
         .join('categories', 'categories_posts.category_id', 'categories.id')
+        .select('categories.name as categories_name')
 
         .select('posts.name as post_name')
 
@@ -50,7 +53,18 @@ export default class CategoriesPostsController {
         .json({ error: err.message, messages: 'Unable to retrieve data at this time' })
     }
   }
-  public async store({}: HttpContextContract): Promise<void> {}
+  public async store({ response, request }: HttpContextContract): Promise<void> {
+    try {
+      const payload = await request.validate(StoreCategoriesPostValidator)
+
+      const categoriesPosts: CategoriesPosts = await CategoriesPosts.create(payload)
+      return response.created(categoriesPosts)
+    } catch (err: any) {
+      return response
+        .status(500)
+        .json({ error: err.message, messages: 'Unable to create data at this time' })
+    }
+  }
 
   public async show({}: HttpContextContract): Promise<void> {}
 
