@@ -3,7 +3,6 @@ import CategoriesPosts from 'App/Models/CategoriesPost'
 import Database from '@ioc:Adonis/Lucid/Database'
 import StoreCategoriesPostValidator from 'App/Validators/StoreCategoriesPostValidator'
 
-
 export default class CategoriesPostsController {
   private helperRequest(nbr: number): string {
     let index: number = 0
@@ -66,7 +65,16 @@ export default class CategoriesPostsController {
     }
   }
 
-  public async show({}: HttpContextContract): Promise<void> {}
+  public async show({ params, response }: HttpContextContract): Promise<void> {
+    try {
+      const categoriesPosts: CategoriesPosts = await CategoriesPosts.findOrFail(params.id)
+      return response.ok(categoriesPosts)
+    } catch (err: any) {
+      return response
+        .status(500)
+        .json({ error: err.message, messages: 'Unable to retrieve data at this time' })
+    }
+  }
 
   public async update({}: HttpContextContract): Promise<void> {
     //pas besoin de l'utiliser.
