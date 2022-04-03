@@ -28,6 +28,7 @@ Route.group(() => {
   Route.post('/users', 'AuthController.register')
   Route.post('/users/login', 'AuthController.login')
   Route.get('/user', 'AuthController.me').middleware(['auth:jwt'])
+
   Route.put('/users', 'AuthController.update').middleware(['auth:jwt'])
 
   Route.resource('/posts', 'PostsController')
