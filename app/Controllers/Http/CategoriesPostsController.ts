@@ -80,9 +80,10 @@ export default class CategoriesPostsController {
     //pas besoin de l'utiliser.
   }
 
-  public async destroy({ params, response }: HttpContextContract): Promise<void> {
+  public async destroy({ params, response, bouncer }: HttpContextContract): Promise<void> {
     try {
       const categoryPost: CategoriesPosts = await CategoriesPosts.findOrFail(params.id)
+      await bouncer.with('CategoriesPostsPolicy').authorize('delete')
 
       await categoryPost.delete()
       response.status(200).json({ message: 'the categoryPost has been deleted' })

@@ -2,7 +2,6 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Favorite from 'App/Models/Favorite'
 import StoreFavoriteValidator from 'App/Validators/StoreFavoriteValidator'
 
-
 export default class FavoritesController {
   public async index({ response }: HttpContextContract): Promise<void> {
     try {
