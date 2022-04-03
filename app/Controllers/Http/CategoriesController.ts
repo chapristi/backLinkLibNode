@@ -59,7 +59,7 @@ export default class CategoriesController {
       const category: Category = await Category.findOrFail(params.id)
       await bouncer.with('CatgoriesPolicy').authorize('update')
 
-      category.delete()
+      await category.delete()
       response.ok({ message: 'the category was deleted' })
     } catch (err: any) {
       return response

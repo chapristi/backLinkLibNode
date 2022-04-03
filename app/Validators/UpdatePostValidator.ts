@@ -24,10 +24,8 @@ export default class UpdatePostValidator {
    *    ```
    */
   public schema = schema.create({
-
-
-    name: schema.string.optional({ trim: true },[]),
-    link: schema.string.optional({ trim: true },[]),
+    name: schema.string.optional({ trim: true }, []),
+    link: schema.string.optional({ trim: true }, []),
   })
 
   /**

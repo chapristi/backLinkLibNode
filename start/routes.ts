@@ -45,8 +45,20 @@ Route.group(() => {
       'update': ['auth:jwt'],
       'destroy': ['auth:jwt'],
     })
-  Route.resource('/categoriesPost', 'CategoriesPostsController').apiOnly().middleware({})
-  Route.resource('/favorites', 'CategoriesPostsController').apiOnly().middleware({})
+  Route.resource('/categoriesPost', 'CategoriesPostsController')
+    .apiOnly()
+    .middleware({
+      '*': ['auth:jwt'],
+      'update': ['auth:jwt'],
+      'destroy': ['auth:jwt'],
+    })
+  Route.resource('/favorites', 'FavoritesController')
+    .apiOnly()
+    .middleware({
+      '*': ['auth:jwt'],
+      'update': ['auth:jwt'],
+      'destroy': ['auth:jwt'],
+    })
 
   Route.post('/refresh', async ({ auth, request, response }: HttpContextContract) => {
     const refreshToken = request.input('refresh_token')
