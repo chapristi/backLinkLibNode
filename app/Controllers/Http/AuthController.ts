@@ -7,7 +7,6 @@ import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import UpdateUserValidator from 'App/Validators/Auth/UpdateUserValidator'
 import Hash from '@ioc:Adonis/Core/Hash'
 
-
 export default class AuthController {
   public async register({ request, response }: HttpContextContract): Promise<void> {
     const payload = await request.validate(StoreUserValidator)
